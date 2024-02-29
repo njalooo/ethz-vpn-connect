@@ -25,3 +25,6 @@ ethz-vpn [Option]
   Whereby [Option]:
     connect,c           to Connect
     disconnect, dc, d   to Disconnect
+
+# Contribute
+If you'd like to contribute, you could add an bash completion script (https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial).
