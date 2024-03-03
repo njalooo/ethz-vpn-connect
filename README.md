@@ -12,6 +12,8 @@ Put your OTP Token (2FA) in the file `/secrets/ethzvpntoken.secret`
 
 Alternatively choose any location and edit the shell script.
 
+Alternatively to providing the token secret, you can edit the Script: line 7: remove `--token-mode=totp --token-secret=sha1:base32:$TOKEN`, remove line 10 and 4. With this option you will be prompted for your OTP token each time you connect.
+
 Make sure the filepermissions for the secret files are `chmod og-rwx /secrets/*.secret`, and that the files are owned by `chown root:root /secrets/*.secret`
 
 Edit the `ethz-vpn` shell script, and change your username on line 7 to match your ETH-Kürzel
