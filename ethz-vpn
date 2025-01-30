@@ -1,17 +1,35 @@
 #!/bin/bash
 
 connect () {
-        TOKEN=$(sudo cat /secrets/ethzvpntoken.secret) 
-        #place your OTP password seccret here, or choose another location. Make sure sour permissions are "chmod og-rwx ./*.secret", and user:group is root:root
-        
-        sudo cat /secrets/ethzvpnpass.secret | sudo openconnect -b -u kuerzel@student-net.ethz.ch -g student-net --useragent=AnyConnect --passwd-on-stdin --token-mode=totp --token-secret=sha1:base32:$TOKEN sslvpn.ethz.ch
-        #Same goes here for the password secret file. If you don't want the OTP secret, you can remove the --token- arguments and Variable. You will be prompted for a password, wich is the OTP token.
-        
-        TOKEN="" #Clears variable for additional security.
+        read -sp $'Please type in your Encryption Password:\n' encpass
+        TOKEN=$(cat ~/.share/ethz-vpn-connect/ethzvpntoken.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
+        PASSWORD=$(cat ~/.share/ethz-vpn-connect/ethzvpnpass.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
+        USERNAME=$(cat ~/.share/ethz-vpn-connect/ethzvpnusername.txt)
+        echo $PASSWORD | sudo openconnect -b -u $USERNAME@student-net.ethz.ch -g student-net --useragent=AnyConnect --passwd-on-stdin --token-mode=totp --token-secret=sha1:base32:$TOKEN 
+sslvpn.ethz.ch
+        encpass=""
+        PASSWORD=""
+        TOKEN=""
 }
 
 disconnect () {
         sudo killall -v -SIGINT openconnect #add -i option to ask for confirmation, usefull if running multible openconnect.
+}
+
+setup() {
+        echo 'You are about to overwrite your secrets. Press ctrl + C to cancel.'
+        read -sp $'Please type in your Username:\n' USERNAME
+        read -sp $'Please type in your Encryption Password:\n' encpass
+        read -sp $'Please type in your ETHZ WLAN Password:\n' PASSWORD
+        read -sp $'Please type in your ETHZ OTP Secret:\n' TOKEN
+        mkdir ~/.share/ethz-vpn-connect
+        echo $PASSWORD | openssl enc -aes-256-cbc -pbkdf2 -a -k $encpass > ~/.share/ethz-vpn-connect/ethzvpnpass.secret
+        echo $TOKEN | openssl enc -aes-256-cbc -pbkdf2 -a -k $encpass > ~/.share/ethz-vpn-connect/ethzvpntoken.secret
+        echo $USERNAME > ~/.share/ethz-vpn-connect/ethzvpnusername.txt
+        encpass=""
+        PASSWORD=""
+        TOKEN=""
+        echo 'Secrets set'
 }
 
 case "$1" in 
@@ -31,5 +49,5 @@ case "$1" in
                 disconnect
                 ;;
         *)
-                echo -e 'Usage: ethz-vpn [Option] \n [Option]: \n       connect, c:             Connect VPN \n disconnect, d, dc:      Disconnect VPN'
+                echo -e 'Usage: ethz-vpn [Option] \n [Option]: \n       connect, c:             Connect VPN \n  disconnect, d, dc:      Disconnect VPN \n setup: set secrets and eth-Kürzel.\n'
 esac
