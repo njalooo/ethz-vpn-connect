@@ -6,19 +6,9 @@ Install the openconnect package using your packet manager like apt or pacman
 
 Then place the `ethz-vpn` shell script file in your `/bin/` Directory
 
-Put your password in the file `/secrets/ethzvpnpass.secret`
+run `ethz-vpn setup` to enter your credentials. They will be stored encrypted with the password you choose in ~/.share/ethz-vpn-connect/
 
-Put your OTP Token (2FA) in the file `/secrets/ethzvpntoken.secret`
-
-Alternatively choose any location and edit the shell script.
-
-Alternatively to providing the token secret, you can edit the Script: line 7: remove `--token-mode=totp --token-secret=sha1:base32:$TOKEN`, remove line 10 and 4. With this option you will be prompted for your OTP token each time you connect.
-
-Make sure the filepermissions for the secret files are `chmod og-rwx /secrets/*.secret`, and that the files are owned by `chown root:root /secrets/*.secret`
-
-Edit the `ethz-vpn` shell script, and change your username on line 7 to match your ETH-Kürzel
-
-Make sure the filepermissions for the `ethz-vpn` shell script are `chmod a+x /bin/ethz-vpn`, and that the files are owned by `chown root:root /bin/ethz-vpn`
+Alternatively to providing the token secret, you can edit the Script: line 7: remove `--token-mode=totp --token-secret=sha1:base32:$TOKEN`, remove line 5,11,23,30. With this option you will be prompted for your OTP token each time you connect.
 
 Restart your shell to load the new command using `exec bash`
 
@@ -27,6 +17,7 @@ ethz-vpn [Option]
   Whereby [Option]:
     connect,c           to Connect
     disconnect, dc, d   to Disconnect
+    setup               to Setup Username and Secrets
 
 # Contribute
 If you'd like to contribute, you could add an bash completion script (https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial).
