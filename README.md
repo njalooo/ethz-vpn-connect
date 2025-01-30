@@ -15,11 +15,11 @@ Alternatively to providing the token secret, you can edit the Script: line 7: re
 Restart your shell to load the new command using `exec bash`
 
 # Usage
-ethz-vpn [Option]
-  Whereby [Option]:
-    connect,c           to Connect
-    disconnect, dc, d   to Disconnect
-    setup               to Setup Username and Secrets
+ethz-vpn [Option]  
+Whereby [Option]:  
+- connect,c:           to Connect  
+- disconnect, dc, d:   to Disconnect  
+- setup:               to Setup Username and Secrets  
 
 # Contribute
 If you'd like to contribute, you could add an bash completion script (https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial).
