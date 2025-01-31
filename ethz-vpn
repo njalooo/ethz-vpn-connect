@@ -29,7 +29,7 @@ setup() {
         encpass=""
         PASSWORD=""
         TOKEN=""
-        echo 'Secrets set'
+        echo $'Secrets set\n'
 }
 
 case "$1" in 
@@ -47,6 +47,9 @@ case "$1" in
                 ;;
         dc)
                 disconnect
+                ;;
+        setup)
+                setup
                 ;;
         *)
                 echo -e 'Usage: ethz-vpn [Option] \n [Option]: \n       connect, c:             Connect VPN \n  disconnect, d, dc:      Disconnect VPN \n setup: set secrets and eth-Kürzel.\n'
