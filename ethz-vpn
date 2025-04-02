@@ -1,12 +1,13 @@
 #!/bin/bash
 
+DATADIR=~/.local/ethz-vpn-connect
+
 connect () {
         read -sp $'Please type in your Encryption Password:\n' encpass
-        TOKEN=$(cat ~/.share/ethz-vpn-connect/ethzvpntoken.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
-        PASSWORD=$(cat ~/.share/ethz-vpn-connect/ethzvpnpass.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
-        USERNAME=$(cat ~/.share/ethz-vpn-connect/ethzvpnusername.txt)
-        echo $PASSWORD | sudo openconnect -b -u $USERNAME@student-net.ethz.ch -g student-net --useragent=AnyConnect --passwd-on-stdin --token-mode=totp --token-secret=sha1:base32:$TOKEN 
-sslvpn.ethz.ch
+        TOKEN=$(cat $DATADIR/ethzvpntoken.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
+        PASSWORD=$(cat $DATADIR/ethzvpnpass.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
+        USERNAME=$(cat $DATADIR/ethzvpnusername.txt)
+        echo $PASSWORD | sudo openconnect -b -u $USERNAME@student-net.ethz.ch -g student-net --useragent=AnyConnect --passwd-on-stdin --token-mode=totp --token-secret=sha1:base32:$TOKEN sslvpn.ethz.ch
         encpass=""
         PASSWORD=""
         TOKEN=""
@@ -22,17 +23,18 @@ setup() {
         read -sp $'Please type in your Encryption Password:\n' encpass
         read -sp $'Please type in your ETHZ WLAN Password:\n' PASSWORD
         read -sp $'Please type in your ETHZ OTP Secret:\n' TOKEN
-        mkdir ~/.share/ethz-vpn-connect
-        echo $PASSWORD | openssl enc -aes-256-cbc -pbkdf2 -a -k $encpass > ~/.share/ethz-vpn-connect/ethzvpnpass.secret
-        echo $TOKEN | openssl enc -aes-256-cbc -pbkdf2 -a -k $encpass > ~/.share/ethz-vpn-connect/ethzvpntoken.secret
-        echo $USERNAME > ~/.share/ethz-vpn-connect/ethzvpnusername.txt
+        mkdir -p -m u+rwx,go-rwx $DATADIR
+        echo $PASSWORD | openssl enc -aes-256-cbc -pbkdf2 -a -k $encpass > $DATADIR/ethzvpnpass.secret
+        echo $TOKEN | openssl enc -aes-256-cbc -pbkdf2 -a -k $encpass > $DATADIR/ethzvpntoken.secret
+        echo $USERNAME > $DATADIR/ethzvpnusername.txt
+        chmod go-rwx $DATADIR/*
         encpass=""
         PASSWORD=""
         TOKEN=""
-        echo $'Secrets set\n'
+        echo 'Secrets set'
 }
 
-case "$1" in 
+case "$1" in
         'connect')
                 connect
         ;;
@@ -52,5 +54,5 @@ case "$1" in
                 setup
                 ;;
         *)
-                echo -e 'Usage: ethz-vpn [Option] \n [Option]: \n       connect, c:             Connect VPN \n  disconnect, d, dc:      Disconnect VPN \n setup: set secrets and eth-Kürzel.\n'
+                echo -e 'Usage: ethz-vpn [Option] \n [Option]: \n  connect, c:            Connect VPN \n  disconnect, d, dc:     Disconnect VPN \n  setup:                 set secrets and eth-Kürzel.\n'
 esac
