@@ -7,6 +7,8 @@ Install the openconnect package using your packet manager like apt or pacman
 Then place the `ethz-vpn` shell script file in your `/bin/` Directory
 To do this you can simply run: 
 `sudo wget -O /bin/ethz-vpn https://raw.githubusercontent.com/njalooo/ethz-vpn-connect/refs/heads/main/ethz-vpn`
+Followed by:
+`sudo chmod a+x /bin/ethz-vpn`
 
 Restart your shell to load the new command, for example by using `exec bash`
 
