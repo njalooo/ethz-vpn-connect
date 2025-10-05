@@ -10,8 +10,8 @@ To do this you can simply run:
 
 Restart your shell to load the new command, for example by using `exec bash`
 
-run `ethz-vpn setup` to enter your credentials. By default they will be stored, encrypted with the password you chose, in the folder `~/.share/ethz-vpn-connect/`.
-To change this location, edit the script, and change `DATADIR=~/.local/ethz-vpn-connect` to the location of your choice. 
+run `ethz-vpn setup` to enter your credentials. By default they will be stored, encrypted with the password you chose, in the folder `~/.local/share/ethz-vpn-connect/`.
+To change this location, edit the script, and change `DATADIR=~/.local/share/ethz-vpn-connect` to the location of your choice. 
 
 Alternatively to providing the token secret, you can edit the Script: line 10: remove `--token-mode=totp --token-secret=sha1:base32:$TOKEN`, comment line 7,13,25,28,33. With this option you will be prompted for your OTP token each time you connect.
 
