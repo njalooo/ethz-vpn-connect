@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DATADIR=~/.local/ethz-vpn-connect
+#Edit this path to set your credentials location
+DATADIR=~/.local/share/ethz-vpn-connect
 
 connect () {
         read -sp $'Please type in your Encryption Password:\n' encpass
