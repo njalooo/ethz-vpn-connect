@@ -8,7 +8,7 @@ connect () {
         TOKEN=$(cat $DATADIR/ethzvpntoken.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
         PASSWORD=$(cat $DATADIR/ethzvpnpass.secret | openssl enc -aes-256-cbc -pbkdf2 -d -a -k $encpass)
         USERNAME=$(cat $DATADIR/ethzvpnusername.txt)
-        echo $PASSWORD | sudo openconnect -b -u $USERNAME@student-net.ethz.ch -g student-net --useragent=AnyConnect --passwd-on-stdin --token-mode=totp --token-secret=sha1:base32:$TOKEN sslvpn.ethz.ch
+        echo $PASSWORD | sudo openconnect -b -u $USERNAME@student-net.ethz.ch -g student-net --useragent=AnyConnect --passwd-on-stdin --token-mode=totp --token-secret=sha1:base32:$TOKEN sslvpn.ethz.ch --no-external-auth
         encpass=""
         PASSWORD=""
         TOKEN=""
